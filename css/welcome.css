@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Anton&family=Berkshire+Swash&family=Lora:ital,wght@0,400..700;1,400..700&family=Noto+Serif+Kannada:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100..900&display=swap');
+
 * {
     font-family: "Poppins", sans-serif;
- 
 }
+
 body {
     margin: 0;
     padding: 0;
@@ -16,13 +17,16 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    
 }
 
 .welcome-container {
     text-align: center;
     padding: 20px;
-
+    background-color: #1F2A47;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
 }
 
 .logo img {
@@ -36,9 +40,10 @@ h1 {
     margin-bottom: 20px;
 }
 
-.auth-buttons {
+.auth-buttons,
+form {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     gap: 10px;
 }
 
@@ -56,7 +61,6 @@ button {
     color: white;
     font-weight: 600;
     font-style: normal;
-   
 }
 
 .login-button:hover {
@@ -74,4 +78,16 @@ button {
 .signup-button:hover {
     background-color: #71fc78;
     color: #141718;
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #71fc78;
 }
