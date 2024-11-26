@@ -1,5 +1,44 @@
 // script.js
 
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const chatWindow = document.getElementById('chat-window');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
@@ -31,3 +70,23 @@ sendButton.addEventListener('click', () => {
     //     chatWindow.scrollTop = chatWindow.scrollHeight;
     // }, 1000);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//display messages at the center
+
