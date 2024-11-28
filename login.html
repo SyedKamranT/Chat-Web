@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In - Chat Web Application</title>
-    <link rel="stylesheet" href="/css/welcome.css">
-    <script type="module" src="/js/authentication.js"></script> <!-- Import authentication.js -->
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Page Title</title>
+        <link rel="stylesheet" href="/css/welcome.css">
+        <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
+    </head>
 <body>
     <div class="welcome-container">
         <h1>Log In</h1>
@@ -19,7 +21,8 @@
                 <label for="password"></label>
                 <input type="password" id="password" placeholder="Enter your password" required>
             </div>
-            <button id="logInButton" type="submit" class="login-button">Log In</button>
+            <button id="logInButton" class="login-button" type="button">Log In</button>
+
         </form>
     </div>
     <script type="module">
