@@ -1,76 +1,75 @@
-
+// Import Firebase modules
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
 
-// Initialize Firebase Database
-const db = getDatabase(firebaseApp);
-// Reference to chats
-const chatsRef = ref(db, 'chats');
-const sendMessage = (chatId, senderId, message) => {
-    const messageRef = push(ref(db, `chats/${chatId}/messages`));
-    set(messageRef, {
-      senderId,
-      message,
-      timestamp: Date.now(),
-    });
-  };
-  
-  import { initializeApp } from "firebase/app";
-
+// Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  databaseURL: "YOUR_DATABASE_URL",
+  apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
+  authDomain: "chatwebapplication-1b801.firebaseapp.com",
+  databaseURL: "https://chatwebapplication-1b801-default-rtdb.firebaseio.com",
+  projectId: "chatwebapplication-1b801",
+  storageBucket: "chatwebapplication-1b801.firebasestorage.app",
+  messagingSenderId: "176027818031",
+  appId: "1:176027818031:web:b98797388831e2d2184eda",
+  measurementId: "G-7T5QV8T8SD"
 };
 
+
+// Initialize Firebase App and Database
 const firebaseApp = initializeApp(firebaseConfig);
+const db = getDatabase(firebaseApp);
 
-  // Example usage
-  sendMessage('chat1', 'user123', 'Hello, World!');
-
-  const getMessages = (chatId) => {
-    const messagesRef = ref(db, `chats/${chatId}/messages`);
-    onValue(messagesRef, (snapshot) => {
-      const messages = snapshot.val();
-      console.log(messages);
-    });
-  };
-  
-  // Example usage
-  getMessages('chat1');
-
-
-  import { getDatabase, ref, onValue } from "firebase/database";
+// Function to send a message
+export const sendMessage = (chatId, senderId, message) => {
+  const messageRef = push(ref(db, `chats/${chatId}/messages`));
+  set(messageRef, {
+    senderId,
+    message,
+    timestamp: Date.now(),
+  })
+    .then(() => console.log("Message sent successfully"))
+    .catch((error) => console.error("Error sending message:", error));
+};
 
 // Function to fetch and display chat messages
-function displayChatMessages(chatId) {
-  const db = getDatabase();
+export const displayChatMessages = (chatId) => {
   const messagesRef = ref(db, `chats/${chatId}/messages`);
-
-  // Reference the container where messages will be displayed
   const messageContainer = document.getElementById("chat-window");
 
-  // Listen for updates to messages
+  if (!messageContainer) {
+    console.error("Message container not found in the DOM.");
+    return;
+  }
+
+  // Listen for message updates
   onValue(messagesRef, (snapshot) => {
     const data = snapshot.val();
+    messageContainer.innerHTML = ""; // Clear previous messages
 
-    // Clear existing messages
-    messageContainer.innerHTML = "";
-
-    // Populate new messages
     if (data) {
       Object.values(data).forEach((msg) => {
         const messageElement = document.createElement("div");
-        messageElement.innerHTML = `<strong>${msg.senderId}</strong>: ${msg.message}`;
+        messageElement.classList.add(
+          "chat-message",
+          msg.senderId === "user123" ? "sent" : "received" // Adjust styling dynamically
+        );
+        messageElement.innerHTML = `
+          <div class="message-bubble">
+            <strong>${msg.senderId}</strong>: ${msg.message}
+          </div>`;
         messageContainer.appendChild(messageElement);
       });
+
+      // Scroll to the latest message
+      messageContainer.scrollTop = messageContainer.scrollHeight;
     }
   });
-}
+};
 
 // Example usage
-const chatId = "chat1"; // Replace with the desired chat ID
+// Replace these values with dynamic ones based on your app's state
+const chatId = "chat1";
+const senderId = "user123";
 displayChatMessages(chatId);
+sendMessage(chatId, senderId, "Hello, World!");
