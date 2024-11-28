@@ -1,7 +1,7 @@
 // Import Firebase modules
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, set, push, onValue } from "firebase/database";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -15,61 +15,31 @@ const firebaseConfig = {
   measurementId: "G-7T5QV8T8SD"
 };
 
-
-// Initialize Firebase App and Database
+// Initialize Firebase App and Authentication
 const firebaseApp = initializeApp(firebaseConfig);
-const db = getDatabase(firebaseApp);
+const auth = getAuth(firebaseApp);
 
-// Function to send a message
-export const sendMessage = (chatId, senderId, message) => {
-  const messageRef = push(ref(db, `chats/${chatId}/messages`));
-  set(messageRef, {
-    senderId,
-    message,
-    timestamp: Date.now(),
-  })
-    .then(() => console.log("Message sent successfully"))
-    .catch((error) => console.error("Error sending message:", error));
-};
-
-// Function to fetch and display chat messages
-export const displayChatMessages = (chatId) => {
-  const messagesRef = ref(db, `chats/${chatId}/messages`);
-  const messageContainer = document.getElementById("chat-window");
-
-  if (!messageContainer) {
-    console.error("Message container not found in the DOM.");
-    return;
-  }
-
-  // Listen for message updates
-  onValue(messagesRef, (snapshot) => {
-    const data = snapshot.val();
-    messageContainer.innerHTML = ""; // Clear previous messages
-
-    if (data) {
-      Object.values(data).forEach((msg) => {
-        const messageElement = document.createElement("div");
-        messageElement.classList.add(
-          "chat-message",
-          msg.senderId === "user123" ? "sent" : "received" // Adjust styling dynamically
-        );
-        messageElement.innerHTML = `
-          <div class="message-bubble">
-            <strong>${msg.senderId}</strong>: ${msg.message}
-          </div>`;
-        messageContainer.appendChild(messageElement);
-      });
-
-      // Scroll to the latest message
-      messageContainer.scrollTop = messageContainer.scrollHeight;
+// Function to sign up user
+export const signUpUser = async (email, password, name) => {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("User signed up:", user);
+        
+        // You can save additional data like 'name' in Firebase Realtime Database if needed.
+        // Example: save user name under /users/{userId} in Firebase DB.
+    } catch (error) {
+        throw new Error("Sign Up Failed: " + error.message);
     }
-  });
 };
 
-// Example usage
-// Replace these values with dynamic ones based on your app's state
-const chatId = "chat1";
-const senderId = "user123";
-displayChatMessages(chatId);
-sendMessage(chatId, senderId, "Hello, World!");
+// Function to log in user
+export const logInUser = async (email, password) => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("User logged in:", user);
+    } catch (error) {
+        throw new Error("Login Failed: " + error.message);
+    }
+};

@@ -1,14 +1,16 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In - Chat Web Application</title>
-    <link rel="stylesheet" href="css/welcome.css">
+    <link rel="stylesheet" href="/css/welcome.css">
+    <script type="module" src="/js/authentication.js"></script> <!-- Import authentication.js -->
 </head>
 <body>
     <div class="welcome-container">
         <h1>Log In</h1>
-        <form>
+        <form id="login-form">
             <div class="form-group">
                 <label for="email"></label>
                 <input type="email" id="email" placeholder="Enter your email" required>
@@ -16,12 +18,29 @@
             <div class="form-group">
                 <label for="password"></label>
                 <input type="password" id="password" placeholder="Enter your password" required>
-                
             </div>
-            <button id="logInButton" type="button" class="login-button">Log In</button>
-            
+            <button id="logInButton" type="submit" class="login-button">Log In</button>
         </form>
     </div>
-    <script type="module" src="/js/Login.js"></script>
+    <script type="module">
+        import { logInUser } from "/js/authentication.js";
+
+        const loginForm = document.getElementById('login-form');
+
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                await logInUser(email, password); // Calling logInUser function
+                alert("Login Successful!");
+                window.location.href = "index.html"; // Redirect to main chat page after successful login
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
 </body>
 </html>
