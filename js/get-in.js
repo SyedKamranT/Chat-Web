@@ -10,8 +10,11 @@ function signUp(email, password, username) {
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
+            // Save user details to the database
             set(ref(db, `users/${user.uid}`), { username, email });
             alert("Sign-up successful!");
+            // Redirect to the main chat page
+            window.location.href = "index.html"; // Replace with your chat page filename
         })
         .catch((error) => {
             alert("Error signing up: " + error.message);
@@ -30,6 +33,8 @@ function logIn(email, password) {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             alert("Login successful!");
+            // Redirect to the main chat page
+            window.location.href = "index.html"; // Replace with your chat page filename
         })
         .catch((error) => {
             alert("Error logging in: " + error.message);
@@ -44,5 +49,11 @@ document.getElementById("logInButton")?.addEventListener("click", () => {
 
 // User State Check
 onAuthStateChanged(auth, (user) => {
-    if (user) console.log("User is logged in:", user);
+    if (user) {
+        console.log("User is logged in:", user);
+        // Optional: Automatically redirect logged-in users to the chat page
+        if (window.location.pathname !== "/index.html") {
+            window.location.href = "index.html"; // Replace with your chat page filename
+        }
+    }
 });
