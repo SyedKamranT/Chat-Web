@@ -1,5 +1,44 @@
 
 
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const chatWindow = document.getElementById('chat-window');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
@@ -17,3 +56,23 @@ sendButton.addEventListener('click', () => {
     messageInput.value = '';
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//display messages at the center
+
