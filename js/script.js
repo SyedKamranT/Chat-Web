@@ -1,54 +1,26 @@
 import { sendMessage, displayChatMessages } from "./chat-fetch.js";
 
-// Initialize chat
-const chatId = "chat1"; // Example chat ID
-const senderId = "user123"; // Replace with dynamic user ID
+// Initialize Chat
+const chatId = "chat1"; // Example chat ID, replace with dynamic chat ID based on user or context
+const senderId = "user123"; // Replace with the currently logged-in user's ID
 
+// Fetch and display chat messages in real-time
 displayChatMessages(chatId);
 
+// Event listener for sending messages
 document.getElementById("send-button").addEventListener("click", () => {
-    const message = document.getElementById("message-input").value.trim();
+    const messageInput = document.getElementById("message-input");
+    const message = messageInput.value.trim();
+
     if (message) {
-        sendMessage(chatId, senderId, message);
-        document.getElementById("message-input").value = ""; // Clear input
+        sendMessage(chatId, senderId, message); // Send the message to Firebase
+        messageInput.value = ""; // Clear the input field after sending
     }
 });
 
-
-const chatWindow = document.getElementById('chat-window');
-const messageInput = document.getElementById('message-input');
-const sendButton = document.getElementById('send-button');
-
-sendButton.addEventListener('click', () => {
-    const userMessage = messageInput.value.trim();
-    if (userMessage === '') return;
-
-    const userMessageBubble = document.createElement('div');
-    userMessageBubble.className = 'chat-message sent';
-    userMessageBubble.innerHTML = `
-        <div class="message-bubble">${userMessage}</div>`;
-    chatWindow.appendChild(userMessageBubble);
-
-    messageInput.value = '';
-
+// Optional: Add "Enter" key functionality to send messages
+document.getElementById("message-input").addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        document.getElementById("send-button").click();
+    }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//display messages at the center
-
