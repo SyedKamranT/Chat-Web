@@ -1,45 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Web Application</title>
-    <link rel="stylesheet" href="/css/chat.css"> <!-- Link to normal CSS file -->
-    <style>
-
-        .container{
-            display: flex;
-            justify-content: space-around;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .mainheader span {
-            font-size: 20px;
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: 600;
-        }
-
-
-        .maincontainers {
-            width: 400px;
-            gap: 20px;
-            border-radius: 6px;
-            height: 150px;
-            background-color: rgb(205, 201, 201);
-            display: flex;
-            flex-direction: column;
-
-
-        }
-
-        .maincontainers .name-mail{
-            display: flex;
-            flex-direction: column;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/chat.css">  <!-- Link to normal CSS file -->
 </head>
-
 <body>
 
     <!-- Sidebar -->
@@ -85,39 +51,46 @@
     <!-- Main Content Area -->
     <div class="main-content">
         <!-- Chat Header -->
-        <div class="mainheader">
-            <h3>Your Chats</h3>
+        <div class="chat-header">
+            <h2 id="chat-header">Your Chats</h2>
         </div>
-        <hr>
-        <div class="container">
-            <div class="maincontainers">
-                <div class="name-mail">
-                    <span>shbaaz khan</span>
-                    <span>shbaz1352khan@gmail.com</span>
-                </div>
-            </div>
-            <div class="maincontainers">
-                <div class="name-mail">
-                    <span>shbaaz khan</span>
-                    <span>shbaz1352khan@gmail.com</span>
-                </div>
-            </div>
-            <div class="maincontainers">
-                <div class="name-mail">
-                    <span>shbaaz khan</span>
-                    <span>shbaz1352khan@gmail.com</span>
-                </div>
-            </div>
-            <div class="maincontainers">
-                <div class="name-mail">
-                    <span>shbaaz khan</span>
-                    <span>shbaz1352khan@gmail.com</span>
-                </div>
-            </div>
+     <hr id="hr">
 
+     <div class="chat-container">
+        <!-- Chat Item -->
+        <div class="chat-item">
+            <div class="chat-info">
+                <p class="chat-name">Shabaz Khan</p>
+                <p class="chat-email">shabazkhan@gmail.com</p>
+            </div>
+            <button class="chat-button">></button>
         </div>
-               
+        <div class="chat-item">
+            <div class="chat-info">
+                <p class="chat-name">Shoiab Ahmed</p>
+                <p class="chat-email">shoaibahmed@gmail.com</p>
+            </div>
+            <button class="chat-button">></button>
+        </div>
+        <div class="chat-item">
+            <div class="chat-info">
+                <p class="chat-name">Rida Khan</p>
+                <p class="chat-email">ridakhan@gmail.com</p>
+            </div>
+            <button class="chat-button">></button>
+        </div>
+        <div class="chat-item">
+            <div class="chat-info">
+                <p class="chat-name">Syed Kamran</p>
+                <p class="chat-email">syedkamran@gmail.com</p>
+            </div>
+            <button class="chat-button">></button>
+        </div>
+    </div>
+                    
 
+     </div>
+        
+    
 </body>
-
 </html>

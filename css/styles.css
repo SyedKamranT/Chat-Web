@@ -70,18 +70,11 @@ body {
     justify-content: space-between;
 }
 
-.profile-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+.profile-info {
+padding-left: 10px;
 }
 
-.profile .arrow-img{
-    width: 10px;
-    height: 10px;
-    margin-left: 15px;
 
-}
 
 .profile-info .profile-name {
     font-weight: bold;
@@ -96,7 +89,8 @@ body {
 .arrow-icon {
     width: 15px;  /* Adjust size as needed */
     height: 10px; /* Adjust size as needed */
-    cursor: pointer;  /* Change cursor to pointer to indicate clickable */
+    cursor: pointer;
+    margin-right: 10px/* Change cursor to pointer to indicate clickable */
 }
 
 /* Main Content Styles */
