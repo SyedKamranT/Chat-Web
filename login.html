@@ -29,7 +29,7 @@
             <button class="signup-button" onclick="window.location.href='signup.html';">Sign Up</button>
         </div>
     </div>
-    
+
     <script type="module">
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
@@ -72,6 +72,7 @@
                     // ...
 
                     alert('User Logged In');
+                    window.location.href="index.html"
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -96,7 +97,6 @@
         });
 
 
-
         logut.addEventListener('click', (e) => {
             signOut(auth).then(() => {
                 alert('Signed out');
@@ -110,6 +110,8 @@
 
 
         });
+
+
     </script>
 
 
