@@ -51,13 +51,20 @@ body {
 
 }
 
-.sidebar-item:hover {
+#chat-1{
+    color: #141718;
+    background-color: white;
+    padding-left: 40px;
+    border-radius: 20px;
+}
+
+/* .sidebar-item:hover {
     color: #141718;
     background-color: white;
     padding-left: 40px;
     transition: 0.3s;
     border-radius: 20px;
-}
+} */
 
 .profile {
     margin-top: auto;
@@ -108,96 +115,4 @@ body {
     border-radius: 15px;
     margin: 20px;
     padding: 20px;
-}
-
-.chat-header {
-    background-color: #141718;
-    color: white;
-    padding: 20px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 10px;
-}
-
-.chat-window {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.chat-message {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-.chat-message.sent {
-    justify-content: flex-end;
-}
-
-.chat-message.received {
-    justify-content: flex-start;
-}
-
-.message-bubble {
-    background-color: #d1d1d1;
-    padding: 10px 15px;
-    border-radius: 10px;
-    max-width: 60%;
-}
-
-.chat-message.sent .message-bubble {
-    background-color: #141718;
-    color: white;
-}
-
-.chat-message.received .message-bubble {
-    background-color: #E4E4E4;
-}
-
-/* Footer and Input Styles */
-.chat-footer {
-    padding: 15px;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    border-top: 1px solid #ddd;
-    border-radius: 10px;
-}
-
-.message-input {
-    flex-grow: 1;
-    padding: 10px;
-    margin-right: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-
-.send-button {
-    padding: 10px 15px;
-    background-color: #52b69a;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.send-button:hover {
-    transition: 0.2s;
-    background-color: #34a0a4;
-    color: white;
-}
-
-/* Scrollbar Styling */
-.chat-window::-webkit-scrollbar {
-    width: 8px;
-}
-
-.chat-window::-webkit-scrollbar-thumb {
-    background-color: #B3B3B3;
-    border-radius: 4px;
-}
-
-.chat-window::-webkit-scrollbar-thumb:hover {
-    background-color: #999;
 }
