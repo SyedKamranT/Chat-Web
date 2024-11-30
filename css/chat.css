@@ -58,13 +58,13 @@ body {
     border-radius: 20px;
 }
 
-/* .sidebar-item:hover {
+.sidebar-item:hover {
     color: #141718;
     background-color: white;
     padding-left: 40px;
     transition: 0.3s;
     border-radius: 20px;
-} */
+}
 
 .profile {
     margin-top: auto;
