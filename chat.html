@@ -39,7 +39,7 @@
 
         <!-- Profile Section -->
         <div class="profile">
-            <img src="/profile.jpg" alt="Profile Image" class="profile-img">
+
             <div class="profile-info">
                 <p class="profile-name">Syed Kamran</p>
                 <p class="profile-email">SyedKamran@gmail.com</p>
@@ -90,7 +90,50 @@
                     
 
      </div>
-        
+     <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
+            authDomain: "chatwebapplication-1b801.firebaseapp.com",
+            databaseURL: "https://chatwebapplication-1b801-default-rtdb.firebaseio.com",
+            projectId: "chatwebapplication-1b801",
+            storageBucket: "chatwebapplication-1b801.firebasestorage.app",
+            messagingSenderId: "176027818031",
+            appId: "1:176027818031:web:b98797388831e2d2184eda",
+            measurementId: "G-7T5QV8T8SD"
+        };
+    
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+    
+        // Update profile info in the sidebar
+        const updateProfileInfo = (user) => {
+            if (user) {
+                const profileNameElement = document.querySelector('.profile-name');
+                const profileEmailElement = document.querySelector('.profile-email');
+    
+                // Set user's display name and email
+                profileNameElement.textContent = user.displayName || "User"; // Use "User" if no displayName is set
+                profileEmailElement.textContent = user.email || "No Email Available";
+            }
+        };
+    
+        // Listen for auth state changes
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                updateProfileInfo(user);
+            } else {
+                // User is signed out
+                console.log("No user is signed in.");
+                window.location.href = "login.html"; // Redirect to login if no user is logged in
+            }
+        });
+    </script>
     
 </body>
 </html>

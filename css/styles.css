@@ -90,7 +90,7 @@ padding-left: 10px;
     width: 15px;  /* Adjust size as needed */
     height: 10px; /* Adjust size as needed */
     cursor: pointer;
-    margin-right: 10px/* Change cursor to pointer to indicate clickable */
+    margin-right: 10px;/* Change cursor to pointer to indicate clickable */
 }
 
 /* Main Content Styles */
