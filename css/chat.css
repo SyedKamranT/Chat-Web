@@ -116,3 +116,18 @@ body {
     margin: 20px;
     padding: 20px;
 }
+
+.chat-header{
+    font-size: 32px;
+    padding-left: 40px;
+    padding-top: 10px;
+}
+
+#hr{
+width: 90%;
+margin-inline-start: 2.5em;
+margin-block-start: 1em;
+border-width: 1.5px;
+border-style: solid;
+opacity: 30%;
+}
