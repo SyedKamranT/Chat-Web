@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Web Application</title>
-    <link rel="stylesheet" href="/css/styles.css">  <!-- Link to normal CSS file -->
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Link to normal CSS file -->
 </head>
+
 <body>
 
     <!-- Sidebar -->
@@ -68,7 +70,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-    
+
         // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
@@ -80,23 +82,23 @@
             appId: "1:176027818031:web:b98797388831e2d2184eda",
             measurementId: "G-7T5QV8T8SD"
         };
-    
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth();
-    
+
         // Update profile info in the sidebar
         const updateProfileInfo = (user) => {
             if (user) {
                 const profileNameElement = document.querySelector('.profile-name');
                 const profileEmailElement = document.querySelector('.profile-email');
-    
+
                 // Set user's display name and email
                 profileNameElement.textContent = user.displayName || "User"; // Use "User" if no displayName is set
                 profileEmailElement.textContent = user.email || "No Email Available";
             }
         };
-    
+
         // Listen for auth state changes
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -113,4 +115,5 @@
 
 
 </body>
+
 </html>
