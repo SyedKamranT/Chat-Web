@@ -41,12 +41,16 @@
 
         <!-- Profile Section -->
         <div class="profile">
-
             <div class="profile-info">
-                <p class="profile-name">Syed Kamran</p>
-                <p class="profile-email">SyedKamran@gmail.com</p>
+                <p class="profile-name" id="profile-name">Loading...</p>
+                <p class="profile-email" id="profile-email">Loading...</p>
             </div>
-            <img src="/arrow.png" alt="Arrow Icon" class="arrow-icon"> <!-- Add arrow icon here -->
+            <div class="profile-dropdown">
+                <img src="/arrow.png" alt="Arrow Icon" class="arrow-icon" id="profile-arrow"> <!-- Dropdown Trigger -->
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <button id="logout-button" class="logout-button">Log Out</button>
+                </div>
+            </div>
         </div>
     </aside>
 
@@ -95,6 +99,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
         // Your Firebase configuration
         const firebaseConfig = {
@@ -132,11 +137,33 @@
             } else {
                 // User is signed out
                 console.log("No user is signed in.");
+                window.location.href = "login.html";
+            }
+        });
+
+        
+        // Populate profile info
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById("profile-name").innerText = user.displayName || "User";
+                document.getElementById("profile-email").innerText = user.email;
+            } else {
                 window.location.href = "login.html"; // Redirect to login if no user is logged in
             }
         });
+    
+        // Logout functionality
+        document.getElementById("logout-button").addEventListener("click", () => {
+            signOut(auth)
+                .then(() => {
+                    alert("You have been logged out.");
+                    window.location.href = "login.html";
+                })
+                .catch((error) => {
+                    console.error("Error logging out: ", error.message);
+                });
+        });
     </script>
-
 </body>
 
 </html>
