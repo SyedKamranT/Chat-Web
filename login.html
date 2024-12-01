@@ -71,7 +71,7 @@
                     
 
                     // Format the date to ISO String (you can format it more if needed)
-                    const istTime = currentTime.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }); // This will give you a timestamp in ISO format
+                    const istTime = currentTime.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });   // This will give you a timestamp in ISO format
 
                     // Update the loggers field in the Firebase database
                     set(ref(database, 'loggers/' + user.uid), {
@@ -105,16 +105,7 @@
         });
 
         // Optional logout button (if you add one)
-        const logoutButton = document.getElementById('logoutButton');
-        if (logoutButton) {
-            logoutButton.addEventListener('click', (e) => {
-                signOut(auth).then(() => {
-                    alert('Signed out');
-                }).catch((error) => {
-                    alert(error.message);
-                });
-            });
-        }
+        
     </script>
 
 </body>
