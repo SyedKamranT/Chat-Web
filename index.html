@@ -44,10 +44,15 @@
         <!-- Profile Section -->
         <div class="profile">
             <div class="profile-info">
-                <p class="profile-name"></p>
-                <p class="profile-email"></p>
+                <p class="profile-name" id="profile-name">Loading...</p>
+                <p class="profile-email" id="profile-email">Loading...</p>
             </div>
-            <img src="/arrow.png" alt="Arrow Icon" class="arrow-icon"> <!-- Add arrow icon here -->
+            <div class="profile-dropdown">
+                <img src="/arrow.png" alt="Arrow Icon" class="arrow-icon" id="profile-arrow"> <!-- Dropdown Trigger -->
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <button id="logout-button" class="logout-button">Log Out</button>
+                </div>
+            </div>
         </div>
     </aside>
 
@@ -115,6 +120,7 @@
     </script>
 
 
+    <script type="module" src="/js/profile.js"></script>
 
 </body>
 
