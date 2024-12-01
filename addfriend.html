@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,25 +10,32 @@
 
     </style>
 </head>
+
 <body>
 
-     <!-- Sidebar -->
-     <aside class="sidebar">
+    <!-- Sidebar -->
+    <aside class="sidebar">
         <div class="sidebar-header">
             <h2>Chat App</h2>
         </div>
 
         <nav class="sidebar-menu">
             <!-- Chats Menu Item with Custom Icon -->
+            <a href="chat.html">
             <div class="sidebar-item" id="chat-1">
+                
                 <img src="/Chat.png" alt="Chats Icon" class="sidebar-icon">
                 <span>Chats</span>
-            </div>
+            
+            </div></a>
+        
             <!-- Add Friends Menu Item with Custom Icon -->
-            <div class="sidebar-item">
+            <a href="/addfriend.html">
+            <div class="sidebar-item" id="chat-2">
+              
                 <img src="/add.png" alt="Add Friends Icon" class="sidebar-icon">
                 <span>Add Friends</span>
-            </div>
+            </div></a>
             <!-- Friend List Menu Item with Custom Icon -->
             <div class="sidebar-item">
                 <img src="/list.png" alt="Friend List Icon" class="sidebar-icon">
@@ -58,37 +66,80 @@
 
 
 
-<!-- ------------------------------------------------------------ -->
-    <div class="Friend-section">
-        <div class="friend-header">
-            <h2 id="friend-head">Add Friends</h2>
+    <!-- ------------------------------------------------------------ -->
+    <div class="main-content">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <h2 id="chat-header">Add Friends</h2>
         </div>
-
         <hr id="hr">
-
-        <div class="searchbar">
-            <input type="text" name="" id="searchbar" placeholder="Enter an email to find your someone">
+        <div class="searchbar-2">
+            <input class="searchbar" type="text" name="" id="searchbar"
+                placeholder="Enter an email to find your friends">
+                <div>
+                    <button class="sub-but">Submit</button>
+                </div>
         </div>
+        <div class="chat-container">
+            <!-- Chat Item -->
 
-        <div class="friend-mails">
-            <div class="mail-item">
-                <div class="email">shabaz0070063@gmial.com</div>
-                <div class="plus-icon">+</div>
+            <div class="chat-item">
+                <div class="chat-info">
+                    <p class="chat-name">Shabaz Khan</p>
+                    <p class="chat-email">shabazkhan@gmail.com</p>
+                </div>
+                <button class="chat-button">+</button>
             </div>
         </div>
 
-
-
-
-
-
-
-
-
-
-        
-
-        
     </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
+            authDomain: "chatwebapplication-1b801.firebaseapp.com",
+            databaseURL: "https://chatwebapplication-1b801-default-rtdb.firebaseio.com",
+            projectId: "chatwebapplication-1b801",
+            storageBucket: "chatwebapplication-1b801.firebasestorage.app",
+            messagingSenderId: "176027818031",
+            appId: "1:176027818031:web:b98797388831e2d2184eda",
+            measurementId: "G-7T5QV8T8SD"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        // Update profile info in the sidebar
+        const updateProfileInfo = (user) => {
+            if (user) {
+                const profileNameElement = document.querySelector('.profile-name');
+                const profileEmailElement = document.querySelector('.profile-email');
+
+                // Set user's display name and email
+                profileNameElement.textContent = user.displayName || "User"; // Use "User" if no displayName is set
+                profileEmailElement.textContent = user.email || "No Email Available";
+            }
+        };
+
+        // Listen for auth state changes
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                updateProfileInfo(user);
+            } else {
+                // User is signed out
+                console.log("No user is signed in.");
+                window.location.href = "login.html";
+            }
+        });
+    </script>
+
+
+    <script type="module" src="/js/profile.js"></script>
 </body>
+
 </html>

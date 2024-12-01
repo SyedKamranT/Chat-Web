@@ -52,7 +52,7 @@ body {
 
 }
 
-#chat-1 {
+#chat-2 {
     color: #141718;
     background-color: white;
     padding-left: 40px;
@@ -112,6 +112,7 @@ body {
     margin-right: 10px;
     /* Change cursor to pointer to indicate clickable */
 }
+
 /* Dropdown Menu Styling */
 .profile-dropdown {
     position: relative;
@@ -151,40 +152,113 @@ body {
     display: block;
 }
 
-.Friend-section{
-    color: white;
-    margin: 10px;
-    width: -webkit-fill-available;
-}
-#friend-head{
-    font-size: 30px;
-    margin: 15px;
-    padding: 10px;
-    padding-bottom: 0;
-}
 
-#searchbar{
+
+/* Main Content Styles */
+.main-content {
+    flex-grow: 1;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
     margin: 20px;
-    background-color: #f0eded;
-    /* color: white; */
-    /* padding: 23px 500px; */
-    width: 95%;
-    height: 40px;
-    border: none;
-    border-radius: 10px;
-    padding: 13px;
+    padding: 40px;
+}
+
+.chat-header {
+    font-size: 32px;
 
 }
-.mail-item{
-    display: flex
-;
+
+#hr {
+
+
+    border-width: 1.5px;
+    border-style: solid;
+    opacity: 30%;
+}
+
+.searchbar-2{
+    display: inline-flex;
+    margin-top: 20px;
+}
+.searchbar {
+    padding: 10px;
+   
+    width: 100%;
+
+
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    width: 95%;
-    margin: 20px;
-    padding: 10px;
-    margin-top: 0;
-    background-color: black;
-    color: white;
     border-radius: 10px;
-    padding: 15px 10px;
+}
+
+.sub-but{
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 10px;
+    background-color: #141718;
+    color: white;
+    border: 3px solid #141718;
+}
+/* Chat Container Styling */
+.chat-container {
+    margin-top: 20px;
+
+    width: 100%;
+
+
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+.chat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #F6F6F6;
+    padding: 15px 20px;
+    border-radius: 20px;
+    transition: box-shadow 1s ease;
+    transition: transform 0.5s ease;
+
+}
+
+.chat-item:hover {
+    box-shadow: 0 2px 12px rgba(204, 204, 204, 0.2);
+    transform: scale(1.02);
+}
+
+/* Chat Info Styling */
+.chat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.chat-email {
+    font-size: 0.9rem;
+    color: #666666;
+    margin: 0;
+}
+
+/* Chat Button Styling */
+.chat-button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333333;
+    transition: transform 0.2s ease;
+}
+
+.chat-button:hover {
+    transform: scale(1.2);
 }
