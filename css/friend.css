@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Anton&family=Berkshire+Swash&family=Lora:ital,wght@0,400..700;1,400..700&family=Noto+Serif+Kannada:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Layout */
+body {
+    display: flex;
+    height: 100vh;
+    background-color: #141718;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 300px;
+    background-color: #141718;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    height: 100vh;
+}
+
+.sidebar-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.sidebar-menu {
+    flex-grow: 1;
+}
+
+.sidebar-item {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 20px;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.sidebar-item .sidebar-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 15px;
+
+}
+
+#chat-1 {
+    color: #141718;
+    background-color: white;
+    padding-left: 40px;
+    border-radius: 20px;
+}
+
+.sidebar-item:hover {
+    color: #141718;
+    background-color: white;
+    padding-left: 40px;
+    transition: 0.3s;
+    border-radius: 20px;
+}
+
+.profile {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: #232627;
+    border-radius: 10px;
+    width: auto;
+    /* Increased width to accommodate arrow */
+    justify-content: space-between;
+
+}
+
+
+.profile-info {
+    padding-left: 10px;
+}
+
+
+.profile .arrow-img {
+    width: 10px;
+    height: 10px;
+    margin-left: 15px;
+
+}
+
+.profile-info .profile-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+
+.profile-info .profile-email {
+    font-size: 12px;
+}
+
+.arrow-icon {
+    width: 15px;
+    /* Adjust size as needed */
+    height: 10px;
+    /* Adjust size as needed */
+    cursor: pointer;
+    margin-right: 10px;
+    /* Change cursor to pointer to indicate clickable */
+}
+/* Dropdown Menu Styling */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 120px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 8px;
+}
+
+.dropdown-menu button {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dropdown-menu button:hover {
+    background-color: #f6f6f6;
+    border-radius: 8px;
+}
+
+.arrow-icon {
+    cursor: pointer;
+}
+
+.profile-dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.Friend-section{
+    color: white;
+    margin: 10px;
+}
+#friend-head{
+    font-size: 30px;
+    margin: 15px;
+    padding: 10px;
+    padding-bottom: 0;
+}
+
+#searchbar{
+    margin: 20px;
+    background-color: #f0eded;
+    /* color: white; */
+    /* padding: 23px 500px; */
+    width: 95%;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+
+}
+.mail-item{
+    display: flex
+;
+    justify-content: space-between;
+    width: 95%;
+    margin: 20px;
+    padding: 10px;
+    margin-top: 0;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    padding: 15px 10px;
+}

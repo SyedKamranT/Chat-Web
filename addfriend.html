@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add friends</title>
+    <link rel="stylesheet" href="/css/friend.css">
+    <style>
+
+    </style>
+</head>
+<body>
+
+     <!-- Sidebar -->
+     <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Chat App</h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <!-- Chats Menu Item with Custom Icon -->
+            <div class="sidebar-item" id="chat-1">
+                <img src="/Chat.png" alt="Chats Icon" class="sidebar-icon">
+                <span>Chats</span>
+            </div>
+            <!-- Add Friends Menu Item with Custom Icon -->
+            <div class="sidebar-item">
+                <img src="/add.png" alt="Add Friends Icon" class="sidebar-icon">
+                <span>Add Friends</span>
+            </div>
+            <!-- Friend List Menu Item with Custom Icon -->
+            <div class="sidebar-item">
+                <img src="/list.png" alt="Friend List Icon" class="sidebar-icon">
+                <span>Friend List</span>
+            </div>
+            <!-- Settings Menu Item with Custom Icon -->
+            <div class="sidebar-item">
+                <img src="/setting.png" alt="Settings Icon" class="sidebar-icon">
+                <span>Settings</span>
+            </div>
+        </nav>
+
+        <!-- Profile Section -->
+        <div class="profile">
+            <div class="profile-info">
+                <p class="profile-name" id="profile-name">Loading...</p>
+                <p class="profile-email" id="profile-email">Loading...</p>
+            </div>
+            <div class="profile-dropdown">
+                <img src="/arrow.png" alt="Arrow Icon" class="arrow-icon" id="profile-arrow"> <!-- Dropdown Trigger -->
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <button id="logout-button" class="logout-button">Log Out</button>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+
+
+
+<!-- ------------------------------------------------------------ -->
+    <div class="Friend-section">
+        <div class="friend-header">
+            <h2 id="friend-head">Add Friends</h2>
+        </div>
+
+        <hr id="hr">
+
+        <div class="searchbar">
+            <input type="text" name="" id="searchbar" placeholder="Enter an email to find your someone">
+        </div>
+
+        <div class="friend-mails">
+            <div class="mail-item">
+                <div class="email">shabaz0070063@gmial.com</div>
+                <div class="plus-icon">+</div>
+            </div>
+        </div>
+
+        
+    </div>
+</body>
+</html>
