@@ -154,6 +154,7 @@ body {
 .Friend-section{
     color: white;
     margin: 10px;
+    width: -webkit-fill-available;
 }
 #friend-head{
     font-size: 30px;
