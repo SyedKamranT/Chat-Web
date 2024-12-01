@@ -25,7 +25,7 @@
 
         </form>
         <div class="to-signup">
-            <p> Don't have an acount? Sign Up karle bhai </p>
+            <p> Don't have an account? Sign Up </p>
             <button class="signup-button" onclick="window.location.href='signup.html';">Sign Up</button>
         </div>
     </div>
@@ -33,14 +33,9 @@
     <script type="module">
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getDatabase } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
             apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
             authDomain: "chatwebapplication-1b801.firebaseapp.com",
@@ -52,60 +47,65 @@
             measurementId: "G-7T5QV8T8SD"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
         const auth = getAuth();
 
+        // Select login button element
+        const logInButton = document.getElementById('logInButton');
+
         logInButton.addEventListener('click', (e) => {
-
-
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
 
-
-
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // Signed in 
                     const user = userCredential.user;
-                    // ...
 
-                    alert('User Logged In');
-                    window.location.href = "chat.html"
+                    // Capture the current time
+                    const currentTime = new Date().toISOString();
+
+                    // Update the loggers field in Firebase
+                    set(ref(database, 'loggers/' + user.uid), {
+                        name: user.displayName || 'Unknown',
+                        email: user.email,
+                        loginTime: currentTime
+                    })
+                    .then(() => {
+                        alert('User Logged In');
+                        window.location.href = "chat.html"; // Redirect to the chat page
+                    })
+                    .catch((error) => {
+                        alert('Error saving log data: ' + error.message);
+                    });
                 })
                 .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-
-                    alert(errorMessage);
+                    alert(error.message);
                 });
         });
 
-        const user = auth.currentUser;
+        // Monitor authentication state
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/auth.user
-                const uid = user.uid;
-
-                // ...
+                console.log("User is signed in:", user);
             } else {
-                // User is signed out
-                // ...
+                console.log("User is signed out");
             }
         });
-        logut.addEventListener('click', (e) => {
-            signOut(auth).then(() => {
-                alert('Signed out');
-            }).catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
 
-                alert(errorMessage);
+        // Optional logout button (if you add one)
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', (e) => {
+                signOut(auth).then(() => {
+                    alert('Signed out');
+                }).catch((error) => {
+                    alert(error.message);
+                });
             });
-        });
+        }
     </script>
+
 </body>
 
 </html>
