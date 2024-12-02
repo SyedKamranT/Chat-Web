@@ -34,6 +34,7 @@
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
         const firebaseConfig = {
@@ -50,49 +51,50 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
         const auth = getAuth();
+        const firestore = getFirestore(app);
+
 
         // Select login button element
         const logInButton = document.getElementById('logInButton');
 
         logInButton.addEventListener('click', (e) => {
-
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
 
             signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // Signed in 
+                .then(async (userCredential) => {
                     const user = userCredential.user;
 
-                    // Capture the current time in IST (India Standard Time)
-                    const currentTime = new Date();
-                    const istOffset = 330; // IST is UTC +5:30
-                    currentTime.setMinutes(currentTime.getMinutes() + currentTime.getTimezoneOffset() + istOffset);
-                    
+                    // Capture the current time in IST
+                    const now = new Date();
+                    const ISTOffset = 330; // IST offset in minutes
+                    const currentTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+                    const istTime = currentTime.replace(/(\d+)\/(\d+)\/(\d+),/, (_, month, day, year) => `${year}-${month}-${day}`);
 
-                    // Format the date to ISO String (you can format it more if needed)
-                    const istTime = currentTime.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });   // This will give you a timestamp in ISO format
-
-                    // Update the loggers field in the Firebase database
-                    set(ref(database, 'loggers/' + user.uid), {
+                    // Write to Realtime Database
+                    await set(ref(database, 'loggers/' + user.uid), {
                         name: user.displayName || 'Unknown',
                         email: user.email,
-                        loginTime: istTime // Store IST time
-                    })
-                        .then(() => {   
-                            alert('User Logged In');
-                            window.location.href = "chat.html"; // Redirect to the chat page
-                        })
-                        .catch((error) => {
-                            alert('Error saving log data: ' + error.message);
-                        });
+                        loginTime: istTime
+                    });
+
+                    // Write to Firestore
+                    const userDocRef = doc(firestore, 'loggers', user.uid);
+                    await setDoc(userDocRef, {
+                        name: user.displayName || 'Unknown',
+                        email: user.email,
+                        loginTime: istTime
+                    });
+
+                    alert('User Logged In');
+                    window.location.href = "chat.html"; // Redirect to chat page
                 })
                 .catch((error) => {
                     const errorMessage = error.message;
                     alert(errorMessage);
                 });
-
         });
+
 
 
         // Monitor authentication state
@@ -105,7 +107,7 @@
         });
 
         // Optional logout button (if you add one)
-        
+
     </script>
 
 </body>
