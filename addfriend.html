@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add friends</title>
     <link rel="stylesheet" href="/css/friend.css">
-    <style>
-
-    </style>
 </head>
 
 <body>
@@ -20,28 +17,23 @@
         </div>
 
         <nav class="sidebar-menu">
-            <!-- Chats Menu Item with Custom Icon -->
             <a href="chat.html">
-            <div class="sidebar-item" id="chat-1">
-                
-                <img src="/Chat.png" alt="Chats Icon" class="sidebar-icon">
-                <span>Chats</span>
-            
-            </div></a>
-        
-            <!-- Add Friends Menu Item with Custom Icon -->
+                <div class="sidebar-item" id="chat-1">
+                    <img src="/Chat.png" alt="Chats Icon" class="sidebar-icon">
+                    <span>Chats</span>
+                </div>
+            </a>
+
             <a href="/addfriend.html">
-            <div class="sidebar-item" id="chat-2">
-              
-                <img src="/add.png" alt="Add Friends Icon" class="sidebar-icon">
-                <span>Add Friends</span>
-            </div></a>
-            <!-- Friend List Menu Item with Custom Icon -->
+                <div class="sidebar-item" id="chat-2">
+                    <img src="/add.png" alt="Add Friends Icon" class="sidebar-icon">
+                    <span>Add Friends</span>
+                </div>
+            </a>
             <div class="sidebar-item">
                 <img src="/list.png" alt="Friend List Icon" class="sidebar-icon">
                 <span>Friend List</span>
             </div>
-            <!-- Settings Menu Item with Custom Icon -->
             <div class="sidebar-item">
                 <img src="/setting.png" alt="Settings Icon" class="sidebar-icon">
                 <span>Settings</span>
@@ -55,7 +47,7 @@
                 <p class="profile-email" id="profile-email">Loading...</p>
             </div>
             <div class="profile-dropdown">
-                <img src="/arrow.png" alt="Arrow Icon" class="arrow-icon" id="profile-arrow"> <!-- Dropdown Trigger -->
+                <img src="/arrow.png" alt="Arrow Icon" class="arrow-icon" id="profile-arrow">
                 <div class="dropdown-menu" id="dropdown-menu">
                     <button id="logout-button" class="logout-button">Log Out</button>
                 </div>
@@ -63,12 +55,7 @@
         </div>
     </aside>
 
-
-
-
-    <!-- ------------------------------------------------------------ -->
     <div class="main-content">
-        <!-- Chat Header -->
         <div class="chat-header">
             <h2 id="chat-header">Add Friends</h2>
         </div>
@@ -76,25 +63,20 @@
         <div class="searchbar-2">
             <input class="searchbar" type="text" name="" id="searchbar"
                 placeholder="Enter an email to find your friends">
-                <div>
-                    <button class="sub-but">Submit</button>
-                </div>
-        </div>
-        <div class="chat-container">
-            <!-- Chat Item -->
-
-            <div class="chat-item">
-                <div class="chat-info">
-                    <p class="chat-name">Shabaz Khan</p>
-                    <p class="chat-email">shabazkhan@gmail.com</p>
-                </div>
-                <button class="chat-button">+</button>
+            <div>
+                <button class="sub-but" id="searchButton">Search</button>
             </div>
         </div>
 
+        <div class="chat-container">
+            <!-- Dynamic user data will be added here -->
+        </div>
     </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+        import { getFirestore, collection, query, where, getDocs, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
         // Your Firebase configuration
@@ -112,32 +94,132 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth();
+        const firestore = getFirestore(app);
+        const database = getDatabase(app);
 
-        // Update profile info in the sidebar
-        const updateProfileInfo = (user) => {
-            if (user) {
-                const profileNameElement = document.querySelector('.profile-name');
-                const profileEmailElement = document.querySelector('.profile-email');
+        // Event Listener for Search Button
+        document.getElementById('searchButton').addEventListener('click', async () => {
+            const email = document.getElementById('searchbar').value.trim();
 
-                // Set user's display name and email
-                profileNameElement.textContent = user.displayName || "User"; // Use "User" if no displayName is set
-                profileEmailElement.textContent = user.email || "No Email Available";
+            if (email) {
+                try {
+                    // Search for user by email in Firestore
+                    const usersRef = collection(firestore, "users");
+                    const q = query(usersRef, where("email", "==", email));
+                    const querySnapshot = await getDocs(q);
+
+                    if (!querySnapshot.empty) {
+                        querySnapshot.forEach(doc => {
+                            const userData = doc.data();
+                            displayUser(userData);
+                        });
+                    } else {
+                        alert("User not found");
+                    }
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                }
+            } else {
+                alert("Please enter an email");
             }
-        };
+        });
+
+        // Function to Display User in Chat Container
+        // Function to Display User in Chat Container
+        function displayUser(userData) {
+            const chatContainer = document.querySelector('.chat-container');
+
+            // Check if the user is already displayed in the container
+            const existingUser = Array.from(chatContainer.children).find(child => {
+                return child.querySelector('.chat-email').textContent === userData.email;
+            });
+
+            if (existingUser) {
+                return; // User is already in the list, no need to add again
+            }
+
+            // If user is not already displayed, create a new user container
+            const chatItem = document.createElement('div');
+            chatItem.classList.add('chat-item');
+
+            chatItem.innerHTML = `
+        <div class="chat-info">
+            <p class="chat-name">${userData.name}</p>
+            <p class="chat-email">${userData.email}</p>
+        </div>
+        <button class="chat-button" data-email="${userData.email}">+</button>
+    `;
+
+            chatContainer.appendChild(chatItem);
+
+            // Add event listener for the '+' button dynamically after adding the user
+            const addButton = chatItem.querySelector('.chat-button');
+            addButton.addEventListener('click', () => addFriend(userData.email));
+        }
+
+
+        // Add Friend Function
+        async function addFriend(friendEmail) {
+            const user = auth.currentUser;
+
+            if (user) {
+                try {
+                    // Add the friend to the current user's friend list in Firebase Realtime Database
+                    const friendsRef = ref(database, 'users/' + user.uid + '/friends');
+                    const friendListSnapshot = await get(friendsRef);
+                    const friends = friendListSnapshot.val() || [];
+
+                    if (!friends.includes(friendEmail)) {
+                        friends.push(friendEmail);
+
+                        // Update the friend list in Realtime Database
+                        await set(friendsRef, friends);
+
+                        // Update the friend list in Firestore
+                        const userRef = doc(firestore, "users", user.uid);
+                        const userDoc = await getDoc(userRef);
+
+                        if (userDoc.exists()) {
+                            const userData = userDoc.data();
+                            const firestoreFriendList = userData.friends || [];
+
+                            if (!firestoreFriendList.includes(friendEmail)) {
+                                firestoreFriendList.push(friendEmail);
+
+                                // Update the Firestore friend's list
+                                await setDoc(userRef, {
+                                    ...userData,
+                                    friends: firestoreFriendList
+                                });
+
+                                alert("Friend added successfully!");
+                            } else {
+                                alert("This user is already in your friend list.");
+                            }
+                        }
+                    } else {
+                        alert("This user is already in your friend list.");
+                    }
+                } catch (error) {
+                    console.error("Error adding friend:", error);
+                    alert("Error adding friend. Please try again.");
+                }
+            } else {
+                alert("You must be logged in to add friends.");
+            }
+        }
+
 
         // Listen for auth state changes
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is signed in
                 updateProfileInfo(user);
             } else {
-                // User is signed out
                 console.log("No user is signed in.");
                 window.location.href = "login.html";
             }
         });
     </script>
-
 
     <script type="module" src="/js/profile.js"></script>
 </body>

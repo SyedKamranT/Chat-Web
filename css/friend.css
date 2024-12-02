@@ -201,6 +201,16 @@ body {
     background-color: #141718;
     color: white;
     border: 3px solid #141718;
+    transition: all ease 0.3s;
+}
+
+.sub-but:hover{
+    box-shadow: 0 2px 12px rgba(204, 204, 204, 0.2);
+    transform: scale(1.05);
+}
+.sub-but:focus{
+    background-color: #666666;
+    border: #666666 solid 3px;
 }
 /* Chat Container Styling */
 .chat-container {
@@ -216,11 +226,13 @@ a{
 }
 .chat-item {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    /* Optional: to separate the items visually */
+    margin-bottom: 20px; /* Adds space between each chat item */
     background-color: #F6F6F6;
-    padding: 15px 20px;
-    border-radius: 20px;
+    border-radius: 15px;
     transition: box-shadow 1s ease;
     transition: transform 0.5s ease;
 
@@ -251,12 +263,16 @@ a{
 
 /* Chat Button Styling */
 .chat-button {
-    background-color: transparent;
+ 
     border: none;
     font-size: 1.5rem;
+    padding: 5px 10px;
+    background-color: #141718;
+    border-radius: 10px;
+    color: white;
+    border: none;
     cursor: pointer;
-    color: #333333;
-    transition: transform 0.2s ease;
+    transition: ease all 0.3s;
 }
 
 .chat-button:hover {
