@@ -98,17 +98,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth();
 
-        // Update profile info in the sidebar
-        const updateProfileInfo = (user) => {
-            if (user) {
-                const profileNameElement = document.querySelector('.profile-name');
-                const profileEmailElement = document.querySelector('.profile-email');
-
-                // Set user's display name and email
-                profileNameElement.textContent = user.displayName || "User"; // Use "User" if no displayName is set
-                profileEmailElement.textContent = user.email || "No Email Available";
-            }
-        };
+   
 
         // Listen for auth state changes
         onAuthStateChanged(auth, (user) => {
@@ -127,5 +117,7 @@
     <script type="module" src="/js/profile.js"></script>
 
 </body>
+
+
 
 </html>
