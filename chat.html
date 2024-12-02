@@ -71,6 +71,7 @@
         <hr id="hr">
 
         <div class="chat-container">
+          
             <!-- Chat items will be dynamically inserted here -->
         </div>
 
@@ -121,6 +122,9 @@
 
                         if (friendDoc.exists()) {
                             const friendData = friendDoc.data();
+
+                           
+                           
                             const chatItem = document.createElement('div');
                             chatItem.classList.add('chat-item');
                             chatItem.innerHTML = `
@@ -147,7 +151,7 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 console.log("User is signed in:", user.uid);
-                updateProfileInfo(user);
+              
                 loadChatsFromFirestore(user.uid);  // Load friends based on user ID
             } else {
                 console.log("No user is signed in.");
