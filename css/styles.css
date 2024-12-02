@@ -163,10 +163,11 @@ body {
     color: white;
     padding: 20px;
     font-size: 18px;
-    font-weight: bold;
     border-radius: 10px;
 }
-
+.chat-header h2{
+    font-weight: 500;
+}
 .chat-window {
     flex-grow: 1;
     padding: 20px;
