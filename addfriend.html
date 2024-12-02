@@ -61,8 +61,7 @@
         </div>
         <hr id="hr">
         <div class="searchbar-2">
-            <input class="searchbar" type="text" name="" id="searchbar"
-                placeholder="Enter an email to find your friends">
+            <input class="searchbar" type="text" name="" id="searchbar" placeholder="Enter an email to find your friends">
             <div>
                 <button class="sub-but" id="searchButton">Search</button>
             </div>
@@ -79,7 +78,7 @@
         import { getFirestore, collection, query, where, getDocs, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
-        // Your Firebase configuration
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
             authDomain: "chatwebapplication-1b801.firebaseapp.com",
@@ -96,6 +95,14 @@
         const auth = getAuth();
         const firestore = getFirestore(app);
         const database = getDatabase(app);
+
+        // Function to update profile information
+        function updateProfileInfo(user) {
+            const userName = user.displayName || "No name";
+            const userEmail = user.email || "No email";
+            document.getElementById("profile-name").textContent = userName;
+            document.getElementById("profile-email").textContent = userEmail;
+        }
 
         // Event Listener for Search Button
         document.getElementById('searchButton').addEventListener('click', async () => {
@@ -124,12 +131,9 @@
             }
         });
 
-        // Function to Display User in Chat Container
-        // Function to Display User in Chat Container
+        // Function to display user in chat container
         function displayUser(userData) {
             const chatContainer = document.querySelector('.chat-container');
-
-            // Check if the user is already displayed in the container
             const existingUser = Array.from(chatContainer.children).find(child => {
                 return child.querySelector('.chat-email').textContent === userData.email;
             });
@@ -138,7 +142,6 @@
                 return; // User is already in the list, no need to add again
             }
 
-            // If user is not already displayed, create a new user container
             const chatItem = document.createElement('div');
             chatItem.classList.add('chat-item');
 
@@ -152,11 +155,10 @@
 
             chatContainer.appendChild(chatItem);
 
-            // Add event listener for the '+' button dynamically after adding the user
+            // Add event listener for the '+' button dynamically
             const addButton = chatItem.querySelector('.chat-button');
             addButton.addEventListener('click', () => addFriend(userData.email));
         }
-
 
         // Add Friend Function
         async function addFriend(friendEmail) {
@@ -171,8 +173,6 @@
 
                     if (!friends.includes(friendEmail)) {
                         friends.push(friendEmail);
-
-                        // Update the friend list in Realtime Database
                         await set(friendsRef, friends);
 
                         // Update the friend list in Firestore
@@ -185,8 +185,6 @@
 
                             if (!firestoreFriendList.includes(friendEmail)) {
                                 firestoreFriendList.push(friendEmail);
-
-                                // Update the Firestore friend's list
                                 await setDoc(userRef, {
                                     ...userData,
                                     friends: firestoreFriendList
@@ -209,7 +207,6 @@
             }
         }
 
-
         // Listen for auth state changes
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -225,4 +222,3 @@
 </body>
 
 </html>
-
