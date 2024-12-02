@@ -34,7 +34,12 @@ body {
 .sidebar-menu {
     flex-grow: 1;
 }
-
+.loader {
+    display: none;
+    text-align: center;
+    font-size: 18px;
+    margin: 20px;
+}
 .sidebar-item {
     padding: 20px;
     display: flex;

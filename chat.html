@@ -60,101 +60,117 @@
             <h2 id="chat-header">Your Friends</h2>
         </div>
         <hr id="hr">
+        <div id="loader" class="loader">
+            <p>Loading...</p>
+        </div>
+        
         <div class="chat-container">
             <!-- Friends list will be dynamically added here -->
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-        import { getFirestore, doc, getDoc, collection, query, getDocs, where } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js"; 
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-    
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
-            authDomain: "chatwebapplication-1b801.firebaseapp.com",
-            databaseURL: "https://chatwebapplication-1b801-default-rtdb.firebaseio.com",
-            projectId: "chatwebapplication-1b801",
-            storageBucket: "chatwebapplication-1b801.firebasestorage.app",
-            messagingSenderId: "176027818031",
-            appId: "1:176027818031:web:b98797388831e2d2184eda",
-            measurementId: "G-7T5QV8T8SD"
-        };
-    
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth();
-        const firestore = getFirestore(app);
-        const database = getDatabase(app);
-    
-        // Function to update profile information
-        function updateProfileInfo(user) {
-            const userName = user.displayName || "No name";
-            const userEmail = user.email || "No email";
-            document.getElementById("profile-name").textContent = userName;
-            document.getElementById("profile-email").textContent = userEmail;
-        }
-    
-        // Function to display friends in chat container
-        async function displayFriends() {
-            const user = auth.currentUser;
-            if (user) {
-                try {
-                    // Retrieve friends from Firestore
-                    const userRef = doc(firestore, "users", user.uid);
-                    const userDoc = await getDoc(userRef);
-    
-                    if (userDoc.exists()) {
-                        const userData = userDoc.data();
-                        const friends = userData.friends || [];
-    
-                        const chatContainer = document.querySelector('.chat-container');
-                        if (friends.length > 0) {
-                            friends.forEach(async (friendEmail) => {
-                                // Retrieve friend details from Firestore
-                                const q = query(collection(firestore, "users"), where("email", "==", friendEmail));
-                                const querySnapshot = await getDocs(q);
-    
-                                querySnapshot.forEach(doc => {
-                                    const friendData = doc.data();
-                                    const friendItem = document.createElement('div');
-                                    friendItem.classList.add('chat-item');
-    
-                                    friendItem.innerHTML = `
-                                        <div class="chat-info">
-                                            <p class="chat-name">${friendData.name}</p>
-                                            <p class="chat-email">${friendData.email}</p>
-                                        </div>
-                                    `;
-    
-                                    chatContainer.appendChild(friendItem);
-                                });
+    <!-- Loader -->
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+    import { getFirestore, doc, getDoc, collection, query, getDocs, where } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";  
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
+        authDomain: "chatwebapplication-1b801.firebaseapp.com",
+        databaseURL: "https://chatwebapplication-1b801-default-rtdb.firebaseio.com",
+        projectId: "chatwebapplication-1b801",
+        storageBucket: "chatwebapplication-1b801.firebasestorage.app",
+        messagingSenderId: "176027818031",
+        appId: "1:176027818031:web:b98797388831e2d2184eda",
+        measurementId: "G-7T5QV8T8SD"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const firestore = getFirestore(app);
+    const database = getDatabase(app);
+
+    // Function to update profile information
+    function updateProfileInfo(user) {
+        const userName = user.displayName || "No name";
+        const userEmail = user.email || "No email";
+        document.getElementById("profile-name").textContent = userName;
+        document.getElementById("profile-email").textContent = userEmail;
+    }
+
+    // Function to display friends in chat container
+    async function displayFriends() {
+        const user = auth.currentUser;
+        if (user) {
+            try {
+                // Show the loader while fetching data
+                document.getElementById("loader").style.display = 'block';
+                const chatContainer = document.querySelector('.chat-container');
+                chatContainer.innerHTML = ''; // Clear previous content
+
+                // Retrieve friends from Firestore
+                const userRef = doc(firestore, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const friends = userData.friends || [];
+
+                    if (friends.length > 0) {
+                        friends.forEach(async (friendEmail) => {
+                            // Retrieve friend details from Firestore
+                            const q = query(collection(firestore, "users"), where("email", "==", friendEmail));
+                            const querySnapshot = await getDocs(q);
+
+                            querySnapshot.forEach(doc => {
+                                const friendData = doc.data();
+                                const friendItem = document.createElement('div');
+                                friendItem.classList.add('chat-item');
+
+                                friendItem.innerHTML = `
+                                    <div class="chat-info">
+                                        <p class="chat-name">${friendData.name}</p>
+                                        <p class="chat-email">${friendData.email}</p>
+                                    </div>
+                                `;
+
+                                chatContainer.appendChild(friendItem);
                             });
-                        } else {
-                            chatContainer.innerHTML = '<p>You have no friends yet. Start adding some!</p>';
-                        }
+                        });
                     } else {
-                        console.log("User document not found");
+                        chatContainer.innerHTML = '<p>You have no friends yet. Start adding some!</p>';
                     }
-                } catch (error) {
-                    console.error("Error fetching friends:", error);
+                } else {
+                    console.log("User document not found");
                 }
+            } catch (error) {
+                console.error("Error fetching friends:", error);
+            } finally {
+                // Hide the loader after data is loaded
+                document.getElementById("loader").style.display = 'none';
             }
         }
-    
-        // Listen for auth state changes
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                updateProfileInfo(user);
-                displayFriends();  // Display friends when the user is authenticated
-            } else {
-                console.log("No user is signed in.");
-                window.location.href = "login.html";
-            }
-        });
-    </script>
+    }
+
+    // Listen for auth state changes
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            updateProfileInfo(user);
+            displayFriends();  // Display friends when the user is authenticated
+        } else {
+            console.log("No user is signed in.");
+            window.location.href = "login.html";
+        }
+    });
+</script>
+
+
+
     
 </body>
 
