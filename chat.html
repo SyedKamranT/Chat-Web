@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Web Application</title>
-    <link rel="stylesheet" href="/css/chat.css"> <!-- Link to normal CSS file -->
+    <link rel="stylesheet" href="/css/chat.css">
 </head>
 
 <body>
@@ -19,25 +19,26 @@
         <nav class="sidebar-menu">
             <!-- Chats Menu Item with Custom Icon -->
             <a href="chat.html">
-            <div class="sidebar-item" id="chat-1">
-                
-                <img src="/Chat.png" alt="Chats Icon" class="sidebar-icon">
-                <span>Chats</span>
-            
-            </div></a>
-        
+                <div class="sidebar-item" id="chat-1">
+                    <img src="/Chat.png" alt="Chats Icon" class="sidebar-icon">
+                    <span>Chats</span>
+                </div>
+            </a>
+
             <!-- Add Friends Menu Item with Custom Icon -->
             <a href="/addfriend.html">
-            <div class="sidebar-item" id="chat-2">
-              
-                <img src="/add.png" alt="Add Friends Icon" class="sidebar-icon">
-                <span>Add Friends</span>
-            </div></a>
+                <div class="sidebar-item" id="chat-2">
+                    <img src="/add.png" alt="Add Friends Icon" class="sidebar-icon">
+                    <span>Add Friends</span>
+                </div>
+            </a>
+
             <!-- Friend List Menu Item with Custom Icon -->
             <div class="sidebar-item">
                 <img src="/list.png" alt="Friend List Icon" class="sidebar-icon">
                 <span>Friend List</span>
             </div>
+
             <!-- Settings Menu Item with Custom Icon -->
             <div class="sidebar-item">
                 <img src="/setting.png" alt="Settings Icon" class="sidebar-icon">
@@ -52,7 +53,8 @@
                 <p class="profile-email" id="profile-email">Loading...</p>
             </div>
             <div class="profile-dropdown">
-                <img src="/arrow.png" alt="Arrow Icon" class="arrow-icon" id="profile-arrow"> <!-- Dropdown Trigger -->
+                <img src="/arrow.png" alt="Arrow Icon" class="arrow-icon" id="profile-arrow">
+                <!-- Dropdown Trigger -->
                 <div class="dropdown-menu" id="dropdown-menu">
                     <button id="logout-button" class="logout-button">Log Out</button>
                 </div>
@@ -69,48 +71,21 @@
         <hr id="hr">
 
         <div class="chat-container">
-            <!-- Chat Item -->
-            <div class="chat-item">
-                <div class="chat-info">
-                    <p class="chat-name">Shabaz Khan</p>
-                    <p class="chat-email">shabazkhan@gmail.com</p>
-                </div>
-                <button class="chat-button">></button>
-            </div>
-            <div class="chat-item">
-                <div class="chat-info">
-                    <p class="chat-name">Shoiab Ahmed</p>
-                    <p class="chat-email">shoaibahmed@gmail.com</p>
-                </div>
-                <button class="chat-button">></button>
-            </div>
-            <div class="chat-item">
-                <div class="chat-info">
-                    <p class="chat-name">Rida Khan</p>
-                    <p class="chat-email">ridakhan@gmail.com</p>
-                </div>
-                <button class="chat-button">></button>
-            </div>
-            <div class="chat-item">
-                <div class="chat-info">
-                    <p class="chat-name">Syed Kamran</p>
-                    <p class="chat-email">syedkamran@gmail.com</p>
-                </div>
-                <button class="chat-button">></button>
-            </div>
+            <!-- Chat items will be dynamically inserted here -->
         </div>
 
-
     </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-        // Your Firebase configuration
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
             authDomain: "chatwebapplication-1b801.firebaseapp.com",
-            databaseURL: "https://chatwebapplication-1b801-default-rtdb.firebaseio.com",
+            databaseURL: "https://chatwebapplication-1b801-default-rtdb.firebaseio.com", // Not used here
             projectId: "chatwebapplication-1b801",
             storageBucket: "chatwebapplication-1b801.firebasestorage.app",
             messagingSenderId: "176027818031",
@@ -121,24 +96,69 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth();
+        const firestore = getFirestore(app);
 
-        // Update profile info in the sidebar
-     
+        const chatContainer = document.querySelector('.chat-container');
+
+        // Function to load the authenticated user's friends and display them
+        const loadChatsFromFirestore = async (userId) => {
+            try {
+                // Fetch the authenticated user's document using userId
+                const userDocRef = doc(firestore, "users", userId);
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const friendsList = userData.friends || []; // Get the friends array
+                    console.log("User data:", userData);
+                    console.log("Friends list:", friendsList);
+
+                    // Now, fetch the friend data
+                    for (let i = 0; i < friendsList.length; i++) {
+                        const friendEmail = friendsList[i];
+                        const friendDocRef = doc(firestore, "users", friendEmail);
+                        const friendDoc = await getDoc(friendDocRef);
+
+                        if (friendDoc.exists()) {
+                            const friendData = friendDoc.data();
+                            const chatItem = document.createElement('div');
+                            chatItem.classList.add('chat-item');
+                            chatItem.innerHTML = `
+                                <div class="chat-info">
+                                    <p class="chat-name">${friendData.name}</p>
+                                    <p class="chat-email">${friendData.email}</p>
+                                </div>
+                                <button class="chat-button">></button>
+                            `;
+                            chatContainer.appendChild(chatItem);
+                        } else {
+                            console.log(`Friend with email ${friendEmail} not found.`);
+                        }
+                    }
+                } else {
+                    console.log("User document not found.");
+                }
+            } catch (error) {
+                console.error("Error loading friends from Firestore:", error);
+            }
+        };
 
         // Listen for auth state changes
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is signed in
+                console.log("User is signed in:", user.uid);
                 updateProfileInfo(user);
+                loadChatsFromFirestore(user.uid);  // Load friends based on user ID
             } else {
-                // User is signed out
                 console.log("No user is signed in.");
-                window.location.href = "login.html"; 
+                window.location.href = "login.html";
             }
         });
+
+     
     </script>
+
     <script type="module" src="/js/profile.js"></script>
 </body>
 
 </html>
-
