@@ -5,6 +5,7 @@ const auth = getAuth();
 // Populate profile info
 auth.onAuthStateChanged((user) => {
     if (user) {
+        // Use the user's displayName if it exists
         document.getElementById("profile-name").innerText = user.displayName || "User";
         document.getElementById("profile-email").innerText = user.email;
     } else {

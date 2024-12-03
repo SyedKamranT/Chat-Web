@@ -14,6 +14,10 @@
         <h1>Log In</h1>
         <form id="login-form">
             <div class="form-group">
+                <label for="name"></label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
                 <label for="email"></label>
                 <input type="email" id="email" placeholder="Enter your email" required>
             </div>
@@ -35,7 +39,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";  // Import updateProfile
 
         const firebaseConfig = {
             apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
@@ -58,13 +62,17 @@
         const logInButton = document.getElementById('logInButton');
 
         logInButton.addEventListener('click', (e) => {
+            var name = document.getElementById('name').value;
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
 
             signInWithEmailAndPassword(auth, email, password)
                 .then(async (userCredential) => {
                     const user = userCredential.user;
-
+                    const name = document.getElementById('name').value.trim();
+                    if (name) {
+                        await updateProfile(user, { displayName: name });  // Update displayName in Firebase Authentication
+                    }
                     // Capture the current time in IST
                     const now = new Date();
                     const ISTOffset = 330; // IST offset in minutes
@@ -73,7 +81,7 @@
 
                     // Write to Realtime Database
                     await set(ref(database, 'loggers/' + user.uid), {
-                        name: user.displayName || 'Unknown',
+                        name: user.displayName || "No name",
                         email: user.email,
                         loginTime: istTime
                     });
@@ -81,7 +89,7 @@
                     // Write to Firestore
                     const userDocRef = doc(firestore, 'loggers', user.uid);
                     await setDoc(userDocRef, {
-                        name: user.displayName || 'Unknown',
+                        name: user.displayName || "No name",
                         email: user.email,
                         loginTime: istTime
                     });
