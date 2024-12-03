@@ -118,19 +118,19 @@
                             friends.forEach(async (friendEmail) => {
                                 const q = query(collection(firestore, "users"), where("email", "==", friendEmail));
                                 const querySnapshot = await getDocs(q);
-                            
+
                                 querySnapshot.forEach(doc => {
                                     const friendData = doc.data();
                                     const friendItem = document.createElement('div');
                                     friendItem.classList.add('chat-item');
-                            
+
                                     friendItem.innerHTML = `
                                         <div class="chat-info">
                                             <p class="chat-name">${friendData.name}</p>
                                             <p class="chat-email">${friendData.email}</p>
                                         </div>
                                     `;
-                            
+
                                     // Attach click event
                                     friendItem.addEventListener('click', () => {
                                         localStorage.setItem('selectedFriend', JSON.stringify({
@@ -140,7 +140,7 @@
                                         console.log('Redirecting to index.html with:', friendData); // Debug
                                         window.location.href = "index.html"; // Ensure the path is correct
                                     });
-                            
+
                                     document.querySelector('.chat-container').appendChild(friendItem);
                                 });
                             });

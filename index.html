@@ -58,11 +58,18 @@
     <div class="main-content">
         <!-- Chat Header -->
         <div class="chat-header">
-            <h2 id="chat-header">Shabaz</h2>
+            <h2 id="chat-header">Loading....</h2>
         </div>
 
         <!-- Chat Window -->
-        <div id="chat-window" class="chat-window">
+        <div class="chat-container">
+            <div class="chat-message sent">
+                <div class="message-bubble">Message content here</div>
+            </div>
+            
+            <div class="chat-message received">
+                <div class="message-bubble">Message content here</div>
+            </div>
         </div>
 
         <!-- Message Input Area -->
@@ -74,8 +81,9 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getFirestore, collection, query, getDocs, doc, addDoc, serverTimestamp, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-
+        
         // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAu5mjCSdDSK7atBnhGjUdJrdwh96BtEic",
@@ -87,38 +95,97 @@
             appId: "1:176027818031:web:b98797388831e2d2184eda",
             measurementId: "G-7T5QV8T8SD"
         };
-
+        
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth();
+        const firestore = getFirestore(app);
+        
+        const messageInput = document.getElementById("message-input");
+        const sendButton = document.getElementById("send-button");
+        const chatContainer = document.querySelector('.chat-container');
+        const friendNameElement = document.getElementById("friend-name");
+        
+        let selectedFriendName = localStorage.getItem('selectedFriendName'); 
+        let selectedFriendEmail = localStorage.getItem('selectedFriendEmail');
 
-
-
-        // Listen for auth state changes
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is signed in
-                updateProfileInfo(user);
-            } else {
-                // User is signed out
-                console.log("No user is signed in.");
-                window.location.href = "login.html";
-            }
-        });
 
         function updateChatHeader() {
             const selectedFriend = JSON.parse(localStorage.getItem('selectedFriend'));
             if (selectedFriend) {
-                document.getElementById("chat-header").textContent = `${selectedFriend.name}`;
-                // If there's more friend-related data to show, update it here
-            } else {
-                console.log("No friend selected.");
+                const chatHeader = document.getElementById("chat-header");
+                chatHeader.textContent = `${selectedFriend.name}`;
             }
         }
+        
+        updateChatHeader();  
 
-        // Call the function to update the UI
-        updateChatHeader();
+        async function sendMessage() {
+            const messageText = messageInput.value.trim();
+            if (!messageText) return;
+        
+            const user = auth.currentUser;
+            if (!user) return;
+        
+            // Dynamically set chatID for the current user and selected friend
+            const chatID = [user.email, selectedFriendEmail].sort().join("_");  // Unique chatID based on both users
+        
+            try {
+                const messagesRef = collection(firestore, "chats", chatID, "messages");
+                await addDoc(messagesRef, {
+                    sender: user.email,
+                    message: messageText,
+                    timestamp: serverTimestamp()
+                });
+        
+                messageInput.value = "";
+            } catch (error) {
+                console.error("Error sending message:", error);
+            }
+        }
+        
+        
+        async function displayMessages() {
+            const user = auth.currentUser;
+            if (!user) return;
+        
+            const chatID = [user.email, selectedFriendEmail].sort().join("_");
+            const messagesRef = collection(firestore, "chats", chatID, "messages");
+        
+            onSnapshot(query(messagesRef, orderBy("timestamp", "asc")), (snapshot) => {
+                chatContainer.innerHTML = "";
+                snapshot.forEach((doc) => {
+                    const { sender, message } = doc.data();
+        
+                    const messageElement = document.createElement("div");
+                    messageElement.classList.add("chat-message", sender === user.email ? "sent" : "received");
+        
+                    const bubbleElement = document.createElement("div");
+                    bubbleElement.classList.add("message-bubble");
+                    bubbleElement.textContent = message;
+        
+                    messageElement.appendChild(bubbleElement);
+                    chatContainer.appendChild(messageElement);
+                });
+        
+                chatContainer.scrollTop = chatContainer.scrollHeight; // Auto scroll to bottom
+            });
+        }
+        
 
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                displayMessages();
+                friendNameElement.textContent = selectedFriendName;
+            } else {
+                // Handle sign-out logic
+            }
+        });
+        
+        sendButton.addEventListener("click", sendMessage);
+        
+        
     </script>
 
 
