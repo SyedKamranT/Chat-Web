@@ -129,15 +129,19 @@
         
             // Dynamically set chatID for the current user and selected friend
             const chatID = [user.email, selectedFriendEmail].sort().join("_");  // Unique chatID based on both users
+            console.log("Current Chat ID:", chatID);
+            const messageData = {
+                sender: user.email,
+                message: messageText,
+                timestamp: serverTimestamp()
+            };
         
             try {
+                // Add message to the chat collection (both users can access the same collection)
                 const messagesRef = collection(firestore, "chats", chatID, "messages");
-                await addDoc(messagesRef, {
-                    sender: user.email,
-                    message: messageText,
-                    timestamp: serverTimestamp()
-                });
+                await addDoc(messagesRef, messageData);
         
+                // Clear the input field after sending the message
                 messageInput.value = "";
             } catch (error) {
                 console.error("Error sending message:", error);
@@ -145,18 +149,21 @@
         }
         
         
+        
         async function displayMessages() {
             const user = auth.currentUser;
             if (!user) return;
         
-            const chatID = [user.email, selectedFriendEmail].sort().join("_");
+            // Dynamically set chatID for the current user and selected friend
+            const chatID = [user.email, selectedFriendEmail].sort().join("_");  // Unique chatID based on both users
             const messagesRef = collection(firestore, "chats", chatID, "messages");
         
             onSnapshot(query(messagesRef, orderBy("timestamp", "asc")), (snapshot) => {
-                chatContainer.innerHTML = "";
+                chatContainer.innerHTML = "";  // Clear the chat container before adding new messages
                 snapshot.forEach((doc) => {
                     const { sender, message } = doc.data();
         
+                    // Determine if it's a sent or received message
                     const messageElement = document.createElement("div");
                     messageElement.classList.add("chat-message", sender === user.email ? "sent" : "received");
         
@@ -168,9 +175,12 @@
                     chatContainer.appendChild(messageElement);
                 });
         
-                chatContainer.scrollTop = chatContainer.scrollHeight; // Auto scroll to bottom
+                chatContainer.scrollTop = chatContainer.scrollHeight;  // Auto scroll to bottom
             });
         }
+       
+        
+        
         
 
 
