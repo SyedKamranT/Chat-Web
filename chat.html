@@ -145,7 +145,8 @@
                                 });
                             });
                         } else {
-                            chatContainer.innerHTML = '<p>You have no friends yet. Start adding some!</p>';
+                            console.error("Error fetching friends:", error);
+                            chatContainer.innerHTML = '<p>Failed to load friends. Please try again later.</p>';
                         }
                     } else {
                         console.log("User document not found");
